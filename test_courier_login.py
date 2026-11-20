@@ -18,10 +18,10 @@ class TestCourierLogin:
             # Должны быть позитивные и негативные сценарии.
             #
             # Например:
-            # ("valid", "valid", 200),
-            # ("missing", "valid", 400),
-            # ("valid", "missing", 400),
-            # ("invalid", "valid", 404),
+             ("valid", "valid", 200),
+             ("missing", "valid", 400),
+             ("valid", "missing", 400),
+             ("invalid", "valid", 404),
         ],
     )
     def test_courier_login(
@@ -31,24 +31,38 @@ class TestCourierLogin:
         password_type,
         expected_status,
     ):
-        # TODO: подготовьте login и password для каждого сценария.
-        #
-        # Для позитивного сценария используйте данные
-        # созданного фикстурой курьера.
-        #
-        # Для негативных сценариев сформируйте необходимые
-        # некорректные или отсутствующие данные.
+        
+        if login_type == "valid":
+            login = courier["login"]
+        elif login_type == "missing":
+            login = ""
+        else:
+            login = "non_existent_user_999"
 
-        login = None
-        password = None
+        if password_type == "valid":
+            password = courier["password"]
+        elif password_type == "missing":
+            password = ""
+        else:
+            password = "wrong_password_999"
 
         payload = {
             "login": login,
             "password": password,
         }
 
-        # TODO: отправьте POST /api/v1/courier/login.
-        response = None
+        response = requests.post(
+            f"{BASE_URL}/api/v1/courier/login",
+            json=payload,
+        )
+
 
         # TODO: проверьте ожидаемый статус ответа.
         assert response.status_code == expected_status
+
+
+        response_data = response.json()
+        if expected_status == 200:
+            assert "id" in response_data
+        else:
+            assert "message" in response_data
