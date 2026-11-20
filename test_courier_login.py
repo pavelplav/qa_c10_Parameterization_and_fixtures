@@ -32,24 +32,20 @@ class TestCourierLogin:
         expected_status,
     ):
         
+        payload = {}
+
         if login_type == "valid":
-            login = courier["login"]
-        elif login_type == "missing":
-            login = ""
-        else:
-            login = "non_existent_user_999"
+            payload["login"] = courier["login"]
+        elif login_type == "invalid":
+            payload["login"] = "non_existent_user_999"
+  
 
         if password_type == "valid":
-            password = courier["password"]
+            payload["password"] = courier["password"]
         elif password_type == "missing":
-            password = ""
-        else:
-            password = "wrong_password_999"
-
-        payload = {
-            "login": login,
-            "password": password,
-        }
+            payload["password"] = ""
+        elif password_type == "invalid":
+            payload["password"] = "wrong_password_999"
 
         response = requests.post(
             f"{BASE_URL}/api/v1/courier/login",
