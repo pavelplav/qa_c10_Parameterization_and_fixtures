@@ -36,6 +36,14 @@ def courier():
     # login_response = requests.post(...)
     # courier_id = login_response.json()["id"]
 
+    
+
+    # TODO: передайте в тест данные, необходимые для авторизации.
+    yield {
+        "login": courier_data["login"],
+        "password": courier_data["password"],
+    }
+
     login_response = requests.post(
         f"{BASE_URL}/api/v1/courier/login",
         json={
@@ -44,13 +52,6 @@ def courier():
         },
     )
     courier_id = login_response.json().get("id")
-
-    # TODO: передайте в тест данные, необходимые для авторизации.
-    yield {
-        "login": courier_data["login"],
-        "password": courier_data["password"],
-        "id": courier_id,
-    }
 
     # TODO: после завершения теста удалите созданного курьера.
     # DELETE /api/v1/courier/{id}

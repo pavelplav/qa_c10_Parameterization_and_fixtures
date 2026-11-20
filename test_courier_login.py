@@ -36,6 +36,8 @@ class TestCourierLogin:
 
         if login_type == "valid":
             payload["login"] = courier["login"]
+        elif login_type == "missing":
+            payload["login"] = ""
         elif login_type == "invalid":
             payload["login"] = "non_existent_user_999"
   
