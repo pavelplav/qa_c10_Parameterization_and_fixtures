@@ -14,7 +14,7 @@ BASE_URL = os.getenv("BASE_URL")
 def courier():
     # TODO: сгенерируйте уникальный логин курьера.
     # Например, используйте uuid.
-    login = f"TODO_{uuid.uuid4().hex[:8]}"
+    login = f"courier_{uuid.uuid4().hex[:8]}"
 
     courier_data = {
         "login": login,
