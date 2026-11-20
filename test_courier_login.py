@@ -21,7 +21,7 @@ class TestCourierLogin:
              ("valid", "valid", 200),
              ("missing", "valid", 400),
              ("valid", "missing", 400),
-             ("invalid", "valid", 404),
+             ("invalid", "invalid", 404),
         ],
     )
     def test_courier_login(
@@ -62,7 +62,12 @@ class TestCourierLogin:
 
 
         response_data = response.json()
+
         if expected_status == 200:
-            assert "id" in response_data
-        else:
-            assert "message" in response_data
+            assert "id" in response_data and response_data["id"] is not None
+        elif expected_status == 400:
+            assert response_data.get("message") == "Недостаточно данных для входа"
+        elif expected_status == 404:
+            assert response_data.get("message") == "Учетная запись не найдена"
+
+        
